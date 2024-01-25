@@ -1,0 +1,41 @@
+﻿@using RestaurantSupportWebApp.ViewModels;
+@model AddEditTableViewModel
+
+<div class="modal fade" id="AddTableModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Додати столик</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="AddTable" autocomplete="off" class="needs-validation row g-2" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="col-4">
+                        <label class="form-label">Зал</label>
+                        <input asp-for="Hall" class="form-control form-control-lg" placeholder="Зал" min="1" max="3" value="1">
+                        <span asp-validation-for="Hall" class="text-danger"></span>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label">Кількість місць</label>
+                        <input asp-for="NumberOfSeats" class="form-control form-control-lg" placeholder="Кількість місць" min="1" max="20" value="1">
+                        <span asp-validation-for="NumberOfSeats" class="text-danger"></span>
+                    </div>
+                    <div class="col-8">
+                        <label class="form-label">Ресторан</label>
+                        <select class="form-select form-select-lg mb-3" id="restaurants" asp-for="RestaurantId">
+                            <option hidden selected value="">Ресторан</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer col-12">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+                        <button type="submit" class="btn btn-success btn-block py-2">Підтвердити</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

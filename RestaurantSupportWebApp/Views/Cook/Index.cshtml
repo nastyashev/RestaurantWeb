@@ -1,0 +1,37 @@
+﻿@using RestaurantSupportWebApp.ViewModels;
+@model MyAccountViewModel
+
+@{
+    ViewBag.Title = "Account Page";
+    Layout = "_LayoutCook.cshtml";
+}
+
+<h1>@Html.Raw(Model.FullName)</h1>
+<hr />
+<div>
+    <h3>Посада</h3>
+    <p>
+        @if (Model.Position != null)
+        {
+            @Html.Raw(Model.Position)
+        }
+        else
+        {
+            <p>Не вказано</p>
+        }
+    </p>
+</div>
+<div>
+    <h3>Зарплата</h3>
+    <p>
+        @if (Model.Salary != null)
+        {
+            @Html.Raw(Model.Salary.ToString())
+            <b>₴</b>
+        }
+        else
+        {
+            <p>Не вказано</p>
+        }
+    </p>
+</div>

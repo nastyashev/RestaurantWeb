@@ -1,0 +1,271 @@
+﻿@using RestaurantSupportWebApp.ViewModels;
+@model EditMenuItemViewModel
+@{
+    ViewBag.Title = "Add dish Page";
+    Layout = "_LayoutChef.cshtml";
+}
+
+<h1>Редагувати страву</h1>
+
+<div class="needs-validation row g-2">
+    <div class="col-10">
+        <label class="form-label">Назва</label>
+        <input id="title" class="form-control form-control-lg" placeholder="Назва" autocomplete="off" value="@Model.Title">
+        <span asp-validation-for="Weight" class="text-danger"></span>
+    </div>
+
+    <div class="col-3">
+        <label class="form-label">Вага</label>
+        <input id="weight" class="form-control form-control-lg" placeholder="Вага" min="1" autocomplete="off" value="@Model.Weight">
+        <span asp-validation-for="Weight" class="text-danger"></span>
+    </div>
+
+    <div class="col-4">
+        <label class="form-label">Ціна</label>
+        <div class="input-group mb-3">
+            <span class="input-group-text">₴</span>
+            <input id="price" class="form-control form-control-lg" placeholder="Ціна" min="0" autocomplete="off" value="@Model.Price">
+            <span class="input-group-text">.00</span>
+        </div>
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="col-3">
+        <label class="form-label">Час приготування (у хвилинах)</label>
+        <input id="preparationtime" class="form-control form-control-lg" placeholder="Час приготування" min="0" autocomplete="off" value="@Model.PreparationTime">
+    </div>
+
+    <div class="col-10">
+        <label class="form-label">Категорія</label>
+        <select id="categories" class="form-select form-select-lg mb-3">
+            
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <label class="form-label">Опис</label>
+    <div class="form-floating">
+        <textarea id="description" class="form-control" placeholder="Опис" style="height: 100px" autocomplete="off">@Model.Description</textarea>
+    </div>
+
+
+    <div class="col-12 mt-4">
+        <button id="submitmenu" type="submit" class="btn btn-success btn-block py-2">Підтвердити</button> 
+        <button id="deletemenu" type="submit" class="btn btn-danger btn-block py-2">Видалити</button>
+        <output id="alerttext" class="text-danger"></output>
+    </div>
+</div>
+
+
+<div class="col-12 mt-4">
+    <button id="addproductbtn" class="btn btn-primary py-2" data-bs-toggle="modal" data-bs-target="#addmenuitemproduct">Додати продукт</button>
+</div>
+
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th scope="col" class="col-8">Назва</th>
+            <th scope="col">Вага</th>
+        </tr>
+    </thead>
+    <tbody id="tablebody">
+    </tbody>
+</table>
+
+<div class="modal fade" id="addmenuitemproduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Додати Продукт</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" autocomplete="off">
+                <div class="needs-validation row g-2">
+                    <div class="col-10">
+                        <label class="form-label">Назва</label>
+                        <input id="productname" oninput="checkProduct()" class="form-control form-control-lg" placeholder="Продукт" list="products" autocomplete="off">
+                        <datalist id="products">
+                            <option hidden selected value="">Продукти</option>
+                        </datalist>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label">Вага</label>
+                        <input id="productweight" oninput="checkProduct()" class="form-control form-control-lg" placeholder="Вага" min="0" autocomplete="off" value="@Model.ProductWeight">
+                    </div>
+                    <div class="modal-footer col-12">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+                        <button id="addproduct" type="submit" class="btn btn-success btn-block py-2" disabled>Підтвердити</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let products = null;
+    let menuitemproducts = @Json.Serialize(Model.Products);
+
+    window.addEventListener('load', () => {
+        let modal = new bootstrap.Modal(document.getElementById('addmenuitemproduct'));
+
+        getCategories();
+        getProducts();
+        reloadTable();
+
+        document.getElementById("addproduct").addEventListener("click", () => {
+            menuitemproducts.push({
+                title: document.getElementById("productname").value,
+                weight: document.getElementById("productweight").value
+            });
+            modal.hide();
+            reloadTable();
+        });
+
+        document.getElementById("addproductbtn").addEventListener("click", () => {
+            document.getElementById("productname").value = "";
+            document.getElementById("productweight").value = "";
+        });
+
+        function getCategories() {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Chef/AddMenuItemGetCategories');
+            xhr.setRequestHeader('Content-Type', 'x-www-form-urlencoded');
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = () => {
+                let data = JSON.parse(xhr.responseText);
+                for (let i = 0; i < data.length; i++) {
+                    let option = document.createElement('option');
+                    option.value = data[i].Id;
+                    option.innerText = data[i].Title;
+                    if (data[i].Id == @Model.CategoryId) {
+                        option.selected = true;
+                    }
+                    document.getElementById('categories').appendChild(option);
+                }
+            };
+            xhr.send();
+        }
+
+        function getProducts() {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Chef/GetProducts');
+            xhr.setRequestHeader('Content-Type', 'x-www-form-urlencoded');
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = () => {
+                let data = JSON.parse(xhr.responseText);
+                products = data;
+                for (let i = 0; i < data.length; i++) {
+                    let option = document.createElement('option');
+                    option.value = data[i].Name;
+                    document.getElementById('products').appendChild(option);
+                }
+            };
+            xhr.send();
+        }
+
+        function reloadTable() {
+            document.getElementById('tablebody').innerHTML = '';
+            for (let i = 0; i < menuitemproducts.length; i++) {
+                let tr = document.createElement('tr');
+                let td1 = document.createElement('td');
+                td1.innerText = menuitemproducts[i].title;
+                let td2 = document.createElement('td');
+                td2.innerText = menuitemproducts[i].weight;
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                document.getElementById('tablebody').appendChild(tr);
+            }
+        }
+
+        document.getElementById("submitmenu").addEventListener("click", () => {
+            let dat = {
+                Title: document.getElementById('title').value,
+                Weight: document.getElementById('weight').value,
+                Price: document.getElementById('price').value,
+                PreparationTime: document.getElementById('preparationtime').value,
+                CategoryId: document.getElementById('categories').value,
+                Description: document.getElementById('description').value,
+                Products: menuitemproducts,
+                Id: @Model.Id,
+            };
+            console.log(dat);
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Chef/EditMenuItem');
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    window.location.href = '/Chef/Menu';
+                }
+                else {
+                    document.getElementById('alerttext').hidden = false;
+                    document.getElementById('alerttext').innerText = xhr.responseText;
+                }
+            };
+            xhr.send(JSON.stringify(dat));
+        });
+
+        document.getElementById("deletemenu").addEventListener("click", () => {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', '/Chef/DeleteMenuItem?id=' + @Model.Id);
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    window.location.href = '/Chef/Menu';
+                }
+                else {
+                    document.getElementById('alerttext').hidden = false;
+                    document.getElementById('alerttext').innerText = xhr.responseText;
+                }
+            };
+            xhr.send();
+        });
+
+        function checkProduct() {
+            let productName = document.getElementById('productname').value;
+            let products = document.getElementById('products').children;
+            let weight = document.getElementById('productweight').value;
+            console.log(productName);
+            console.log(weight);
+            for (let i = 0; i < products.length; i++) {
+                if (products[i].value == productName && weight != null && productName != null) {
+                    document.getElementById('addproduct').disabled = false;
+                    break;
+                }
+            }
+        }
+    });
+
+    document.getElementById('productname').addEventListener('change', check);
+
+    document.getElementById('productweight').addEventListener('change', check);
+
+    function check() {
+        let productName = document.getElementById('productname').value;
+        let productWeight = document.getElementById('productweight').value;
+        let products = document.getElementById('products');
+        let productsTemp = Array();
+
+        for (let i = 1; i < products.options.length; i++) {
+            productsTemp.push(products.options[i].value);
+        }
+        let isinlist = false;
+        for (let i in productsTemp) {
+            if (productsTemp[i] == productName) {
+                isinlist = true;
+            }
+        }
+
+        if (productName == "" || productWeight == 0 || !isinlist) {
+            document.getElementById('addproduct').disabled = true;
+        }
+        else {
+            document.getElementById('addproduct').disabled = false;
+        }
+    }
+</script>
+

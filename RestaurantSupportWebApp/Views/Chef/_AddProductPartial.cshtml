@@ -1,0 +1,42 @@
+﻿@using RestaurantSupportWebApp.ViewModels;
+@model AddProductViewModel
+
+<div class="modal fade" id="AddProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Додати Продукт</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="AddProduct" autocomplete="off" class="needs-validation row g-2" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="col-10">
+                        <label class="form-label">Назва</label>
+                        <input asp-for="Title" class="form-control form-control-lg" placeholder="Назва" maxlength="100" required>
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label">Ціна</label>
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">₴</span>
+                            <input asp-for="Price" class="form-control form-control-lg" placeholder="Зарплата" min="0">
+                        </div>
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" asp-for="IsAllergen" class="form-check-input">
+                        <label class="form-check-label">Алерген</label>
+                    </div>
+                    <div class="modal-footer col-12">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+                        <button type="submit" class="btn btn-success btn-block py-2">Підтвердити</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,22 @@
+[
+    {
+        "Name": "пн-пт, 8:00-16:00",
+        "ScheduleJson": "[{\"StartTime\":\"\",\"EndTime\":\"\"},{\"StartTime\":\"08:00\",\"EndTime\":\"16:00\"},{\"StartTime\":\"08:00\",\"EndTime\":\"16:00\"},{\"StartTime\":\"08:00\",\"EndTime\":\"16:00\"},{\"StartTime\":\"08:00\",\"EndTime\":\"16:00\"},{\"StartTime\":\"08:00\",\"EndTime\":\"16:00\"},{\"StartTime\":\"\",\"EndTime\":\"\"}]"
+    },
+    {
+        "Name": "пн-пт, 10:00-19:00",
+        "ScheduleJson": "[{\"StartTime\":\"\",\"EndTime\":\"\"},{\"StartTime\":\"10:00\",\"EndTime\":\"19:00\"},{\"StartTime\":\"10:00\",\"EndTime\":\"19:00\"},{\"StartTime\":\"10:00\",\"EndTime\":\"19:00\"},{\"StartTime\":\"10:00\",\"EndTime\":\"19:00\"},{\"StartTime\":\"10:00\",\"EndTime\":\"19:00\"},{\"StartTime\":\"\",\"EndTime\":\"\"}]"
+    },
+    {
+        "Name": "пн-сб, 16:00-00:00",
+        "ScheduleJson": "[{\"StartTime\":\"\",\"EndTime\":\"\"},{\"StartTime\":\"16:00\",\"EndTime\":\"00:00\"},{\"StartTime\":\"16:00\",\"EndTime\":\"00:00\"},{\"StartTime\":\"16:00\",\"EndTime\":\"00:00\"},{\"StartTime\":\"16:00\",\"EndTime\":\"00:00\"},{\"StartTime\":\"16:00\",\"EndTime\":\"00:00\"},{\"StartTime\":\"16:00\",\"EndTime\":\"00:00\"}]"
+    },
+    {
+        "Name": "пн-пт, 9:00-18:00",
+        "ScheduleJson": "[{\"StartTime\":\"\",\"EndTime\":\"\"},{\"StartTime\":\"09:00\",\"EndTime\":\"18:00\"},{\"StartTime\":\"09:00\",\"EndTime\":\"18:00\"},{\"StartTime\":\"09:00\",\"EndTime\":\"18:00\"},{\"StartTime\":\"09:00\",\"EndTime\":\"18:00\"},{\"StartTime\":\"09:00\",\"EndTime\":\"18:00\"},{\"StartTime\":\"\",\"EndTime\":\"\"}]"
+    },
+    {
+        "Name": "пн-сб, 12:00-22:00",
+        "ScheduleJson": "[{\"StartTime\":\"\",\"EndTime\":\"\"},{\"StartTime\":\"12:00\",\"EndTime\":\"22:00\"},{\"StartTime\":\"12:00\",\"EndTime\":\"22:00\"},{\"StartTime\":\"12:00\",\"EndTime\":\"22:00\"},{\"StartTime\":\"12:00\",\"EndTime\":\"22:00\"},{\"StartTime\":\"12:00\",\"EndTime\":\"22:00\"},{\"StartTime\":\"12:00\",\"EndTime\":\"22:00\"}]"
+    }
+]

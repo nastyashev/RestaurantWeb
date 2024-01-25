@@ -1,0 +1,344 @@
+[
+    {
+        "Name": "Яловичина",
+        "AmountInStock": 20,
+        "IsAllergen": false,
+        "Price": 12.99
+    },
+    {
+        "Name": "Лосось",
+        "AmountInStock": 15,
+        "IsAllergen": false,
+        "Price": 18.75
+    },
+    {
+        "Name": "Курятина",
+        "AmountInStock": 25,
+        "IsAllergen": false,
+        "Price": 9.99
+    },
+    {
+        "Name": "Креветки",
+        "AmountInStock": 18,
+        "IsAllergen": true,
+        "Price": 22.50
+    },
+    {
+        "Name": "Сир фета",
+        "AmountInStock": 30,
+        "IsAllergen": false,
+        "Price": 7.50
+    },
+    {
+        "Name": "Морква",
+        "AmountInStock": 10,
+        "IsAllergen": false,
+        "Price": 2.99
+    },
+    {
+        "Name": "Помідори",
+        "AmountInStock": 12,
+        "IsAllergen": false,
+        "Price": 3.50
+    },
+    {
+        "Name": "Огірки",
+        "AmountInStock": 8,
+        "IsAllergen": false,
+        "Price": 2.25
+    },
+    {
+        "Name": "Нут",
+        "AmountInStock": 5,
+        "IsAllergen": false,
+        "Price": 4.50
+    },
+    {
+        "Name": "Соус теріякі",
+        "AmountInStock": 10,
+        "IsAllergen": false,
+        "Price": 1.50
+    },
+    {
+        "Name": "Сир",
+        "AmountInStock": 10,
+        "IsAllergen": false,
+        "Price": 2.50
+    },
+    {
+        "Name": "Спеції",
+        "AmountInStock": 10,
+        "IsAllergen": false,
+        "Price": 1.50
+    },
+    {
+        "Name": "Броколі",
+        "AmountInStock": 40,
+        "IsAllergen": false,
+        "Price": 4.25
+    },
+    {
+        "Name": "Оливкова олія",
+        "AmountInStock": 50,
+        "IsAllergen": false,
+        "Price": 9.99
+    },
+    {
+        "Name": "Авокадо",
+        "AmountInStock": 30,
+        "IsAllergen": false,
+        "Price": 6.50
+    },
+    {
+        "Name": "Картопля",
+        "AmountInStock": 35,
+        "IsAllergen": false,
+        "Price": 3.75
+    },
+    {
+        "Name": "Імбир",
+        "AmountInStock": 20,
+        "IsAllergen": false,
+        "Price": 5.99
+    },
+    {
+        "Name": "Молоко",
+        "AmountInStock": 60,
+        "IsAllergen": true,
+        "Price": 2.99
+    },
+    {
+        "Name": "Мед",
+        "AmountInStock": 25,
+        "IsAllergen": true,
+        "Price": 8.50
+    },
+    {
+        "Name": "Креветки тигрові",
+        "AmountInStock": 20,
+        "IsAllergen": true,
+        "Price": 29.99
+    },
+    {
+        "Name": "Капуста",
+        "AmountInStock": 25,
+        "IsAllergen": false,
+        "Price": 2.50
+    },
+    {
+        "Name": "Коріандр",
+        "AmountInStock": 15,
+        "IsAllergen": false,
+        "Price": 4.25
+    },
+    {
+        "Name": "Лимони",
+        "AmountInStock": 50,
+        "IsAllergen": false,
+        "Price": 1.99
+    },
+    {
+        "Name": "Солодка паприка",
+        "AmountInStock": 20,
+        "IsAllergen": false,
+        "Price": 5.50
+    },
+    {
+        "Name": "Лавровий лист",
+        "AmountInStock": 15,
+        "IsAllergen": false,
+        "Price": 7.99
+    },
+    {
+        "Name": "Ананаси",
+        "AmountInStock": 25,
+        "IsAllergen": true,
+        "Price": 9.25
+    },
+    {
+        "Name": "Кедрові горішки",
+        "AmountInStock": 18,
+        "IsAllergen": false,
+        "Price": 11.50
+    },
+    {
+        "Name": "Оцет бальзамічний",
+        "AmountInStock": 30,
+        "IsAllergen": false,
+        "Price": 13.75
+    },
+    {
+        "Name": "Кокосове молоко",
+        "AmountInStock": 20,
+        "IsAllergen": false,
+        "Price": 5.99
+    },
+    {
+        "Name": "Медовий гірчичний соус",
+        "AmountInStock": 15,
+        "IsAllergen": false,
+        "Price": 8.99
+    },
+    {
+        "Name": "Перець чилі",
+        "AmountInStock": 12,
+        "IsAllergen": false,
+        "Price": 4.75
+    },
+    {
+        "Name": "Рис",
+        "AmountInStock": 35,
+        "IsAllergen": false,
+        "Price": 4.99
+    },
+    {
+        "Name": "Апельсини",
+        "AmountInStock": 45,
+        "IsAllergen": true,
+        "Price": 2.25
+    },
+    {
+        "Name": "Чорний перець",
+        "AmountInStock": 20,
+        "IsAllergen": false,
+        "Price": 3.50
+    },
+    {
+        "Name": "Крокети курячі",
+        "AmountInStock": 15,
+        "IsAllergen": true,
+        "Price": 8.99
+    },
+    {
+        "Name": "Моцарелла",
+        "AmountInStock": 25,
+        "IsAllergen": false,
+        "Price": 10.50
+    },
+    {
+        "Name": "Горіхи волоські",
+        "AmountInStock": 30,
+        "IsAllergen": true,
+        "Price": 6.75
+    },
+    {
+        "Name": "Буряк",
+        "AmountInStock": 22,
+        "IsAllergen": false,
+        "Price": 3.25
+    },
+    {
+        "Name": "Печінка ягня",
+        "AmountInStock": 12,
+        "IsAllergen": false,
+        "Price": 14.50
+    },
+    {
+        "Name": "Каперси",
+        "AmountInStock": 25,
+        "IsAllergen": false,
+        "Price": 5.99
+    },
+    {
+        "Name": "Курячі крильця",
+        "AmountInStock": 20,
+        "IsAllergen": true,
+        "Price": 11.99
+    },
+    {
+        "Name": "Цукор",
+        "AmountInStock": 40,
+        "IsAllergen": false,
+        "Price": 2.50
+    },
+    {
+        "Name": "Шпинат",
+        "AmountInStock": 25,
+        "IsAllergen": false,
+        "Price": 4.99
+    },
+    {
+        "Name": "Паста спагетті",
+        "AmountInStock": 30,
+        "IsAllergen": false,
+        "Price": 3.49
+    },
+    {
+        "Name": "Печериці",
+        "AmountInStock": 25,
+        "IsAllergen": false,
+        "Price": 5.25
+    },
+    {
+        "Name": "Кукурудза",
+        "AmountInStock": 18,
+        "IsAllergen": false,
+        "Price": 2.99
+    },
+    {
+        "Name": "Капуста китайська",
+        "AmountInStock": 20,
+        "IsAllergen": false,
+        "Price": 3.75
+    },
+    {
+        "Name": "Цвітна капуста",
+        "AmountInStock": 22,
+        "IsAllergen": false,
+        "Price": 4.25
+    },
+    {
+        "Name": "Кальмари",
+        "AmountInStock": 20,
+        "IsAllergen": true,
+        "Price": 16.99
+    },
+    {
+        "Name": "Кінза",
+        "AmountInStock": 15,
+        "IsAllergen": false,
+        "Price": 6.50
+    },
+    {
+        "Name": "Часник",
+        "AmountInStock": 28,
+        "IsAllergen": false,
+        "Price": 3.99
+    },
+    {
+        "Name": "Грейпфрути",
+        "AmountInStock": 30,
+        "IsAllergen": true,
+        "Price": 2.75
+    },
+    {
+        "Name": "Чорний чай",
+        "AmountInStock": 50,
+        "IsAllergen": false,
+        "Price": 3.25
+    },
+    {
+        "Name": "Зелений чай",
+        "AmountInStock": 50,
+        "IsAllergen": false,
+        "Price": 3.25
+    },
+    {
+        "Name": "Кава Arabica",
+        "AmountInStock": 40,
+        "IsAllergen": false,
+        "Price": 4.50
+    },
+    {
+        "Name": "Сік апельсиновий",
+        "AmountInStock": 60,
+        "IsAllergen": true,
+        "Price": 2.99
+    },
+    {
+        "Name": "Пиво",
+        "AmountInStock": 50,
+        "IsAllergen": true,
+        "Price": 3.50
+    }
+]

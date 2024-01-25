@@ -1,0 +1,56 @@
+﻿@using RestaurantSupportWebApp.ViewModels;
+@model List<MenuViewModel>
+@{
+    ViewBag.Title = "Menu Page";
+    Layout = "_LayoutChef.cshtml";
+}
+
+<h1>Меню</h1>
+<hr />
+<form asp-action="NewMenuItem" class="col-2 p-3">
+    <button class="btn btn-primary py-2">Додати страву</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr class="text-center">
+            <th scope="col" class="col-4">Назва</th>
+            <th scope="col" class="col-5">Категорія</th>
+            <th scope="col">Вага</th>
+            <th scope="col">Ціна</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="text-center">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Weight)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <button onclick="redirect(@item.Id)" type="button" class="btn" style="padding: 0;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 2 16 16">
+                            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+                        </svg>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function redirect(id) {
+        window.location.href = "/Chef/EditMenu?id=" + id;
+    }
+</script>

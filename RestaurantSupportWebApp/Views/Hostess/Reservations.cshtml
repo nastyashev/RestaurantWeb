@@ -1,0 +1,135 @@
+﻿@using RestaurantSupportWebApp.ViewModels;
+@model ReservationViewModel
+@{
+    ViewBag.Title = "Reservations Page";
+    Layout = "_LayoutHostess.cshtml";
+}
+
+<h1>Бронювання</h1>
+<hr />
+
+<form asp-action="Reservations" autocomplete="off" class="container needs-validation row g-2">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    
+    <div class="row mt-2">
+        <div class="col-5">
+            <label class="form-label">Ім'я</label>
+            <input id="name" asp-for="ClientName" class="form-control form-control-lg" placeholder="Ім'я" maxlength="100">
+            <span asp-validation-for="ClientName" class="text-danger"></span>
+        </div>
+
+        <div class="col-4">
+            <label class="form-label">Номер телефону</label>
+            <input id="clientphone" asp-for="ClientPhone" class="form-control form-control-lg" placeholder="Номер телефону">
+            <span asp-validation-for="ClientPhone" class="text-danger"></span>
+        </div>
+
+        <div class="col-2">
+            <label class="form-label">Кількість людей</label>
+            <input id="numberofpeople" asp-for="NumberOfPeople" class="form-control form-control-lg" placeholder="Кількість людей" min="1" value="1">
+            <span asp-validation-for="NumberOfPeople" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-4">
+            <label class="form-label">Час початку</label>
+            <input id="starttime" asp-for="StartTime" asp-format="{0:yyyy-MM-ddTHH:mm}" class="form-control form-control-lg" placeholder="Час початку" value="@DateTime.Today">
+            <span asp-validation-for="StartTime" class="text-danger"></span>
+        </div>
+
+        <div class="col-4">
+            <label class="form-label">Час завершення</label>
+            <input id="endtime" asp-for="EndTime" asp-format="{0:yyyy-MM-ddTHH:mm}" class="form-control form-control-lg" placeholder="Час завершення" value="@DateTime.Today">
+            <span asp-validation-for="EndTime" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-2">
+            <label class="form-label">Зал</label>
+            <select id="hall" class="form-select form-select-lg mb-3" asp-for="Hall">
+                <option hidden selected value="">Зал</option>
+            </select>
+        </div>
+
+        <div class="col-2">
+            <label class="form-label">№ столика</label>
+            <select id="tableid" class="form-select form-select-lg mb-3" asp-for="TableId">
+                <option hidden selected value="">Столик</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="row mt-2">
+        <label class="form-label">Коментар</label>
+        <div class="form-floating">
+            <textarea id="comment" asp-for="Comment" class="form-control" placeholder="Коментар" style="height: 100px"></textarea>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <button type="submit" class="btn btn-success btn-block py-2">Підтвердити</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    window.addEventListener('load', () => {
+        getHalls();
+        document.getElementById("numberofpeople").addEventListener("change", search);
+        document.getElementById("starttime").addEventListener("change", search);
+        document.getElementById("endtime").addEventListener("change", search);
+        document.getElementById("hall").addEventListener("change", search);
+        function search() {
+            let dat = {
+                NumberOfPeople: document.getElementById('numberofpeople').value,
+                StartTime: document.getElementById('starttime').value,
+                EndTime: document.getElementById('endtime').value,
+                Hall: document.getElementById('hall').value,
+            };
+            if (dat.NumberOfPeople === '' || dat.StartTime === '' || dat.EndTime === '' || dat.Hall === '') return;
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Hostess/ReservationsGetTables');
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    document.getElementById('tableid').innerHTML = '<option hidden selected value="">Столик</option>';
+                    for (let i = 0; i < data.length; i++) {
+                        let option = document.createElement('option');
+                        option.value = data[i];
+                        option.innerText = data[i];
+                        document.getElementById('tableid').appendChild(option);
+                    }
+                }
+                else document.getElementById('tableid').innerHTML = '<option hidden selected value="">Столик</option>';
+            };
+            xhr.send(JSON.stringify(dat));
+        }
+
+        function getHalls() {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Hostess/ReservationsGetAvailableTables');
+            xhr.setRequestHeader('Content-Type', 'x-www-form-urlencoded');
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = () => {
+                let data = JSON.parse(xhr.responseText);
+                let uniqueHalls = new Set();
+                for (let i = 0; i < data.length; i++) {
+                    uniqueHalls.add(data[i].Hall);
+                }
+                for (let hall of uniqueHalls) {
+                    let option = document.createElement('option');
+                    option.value = hall;
+                    option.innerText = hall;
+                    document.getElementById('hall').appendChild(option);
+                }
+            };
+            xhr.send();
+        }
+    });
+</script>
+

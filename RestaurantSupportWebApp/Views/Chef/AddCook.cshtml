@@ -1,0 +1,102 @@
+﻿@using RestaurantSupportWebApp.ViewModels;
+@model AddStaffViewModel
+
+@{
+    ViewBag.Title = "Add Cook";
+    Layout = "_LayoutChef.cshtml";
+}
+
+<h1>Додати кухаря</h1>
+<hr />
+
+<form asp-action="AddCook" autocomplete="off" class="needs-validation row g-2">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-10">
+        <label class="form-label">Ім'я</label>
+        <input asp-for="Name" class="form-control form-control-lg" placeholder="Ім'я" maxlength="50" required>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="col-10">
+        <label class="form-label">Прізвище</label>
+        <input asp-for="Surname" class="form-control form-control-lg" placeholder="Прізвище" maxlength="50" required>
+        <span asp-validation-for="Surname" class="text-danger"></span>
+    </div>
+    <div class="col-10">
+        <label class="form-label">По-Батькові</label>
+        <input asp-for="Patronymic" class="form-control form-control-lg" placeholder="По-Батькові" maxlength="50">
+    </div>
+    <div class="col-md-5">
+        <label class="form-label">Ім'я користувача</label>
+        <input asp-for="Username" class="form-control form-control-lg" placeholder="Ім'я користувача" maxlength="256" required>
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+    <div class="col-md-5">
+        <label class="form-label">Пароль</label>
+        <input asp-for="Password" class="form-control form-control-lg" placeholder="Пароль" required>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="col-10">
+        <label class="form-label">Посада</label>
+        <select class="form-select form-select-lg mb-3" id="positions" asp-for="PositionId">
+            <option hidden selected value="">Посада</option>
+        </select>
+    </div>
+    <div class="col-10">
+        <label class="form-label">Графік</label>
+        <select class="form-select form-select-lg mb-3" id="schedules" asp-for="ScheduleId">
+            <option hidden selected value="">Графік</option>
+        </select>
+    </div>
+    <div class="col-4">
+        <label class="form-label">Зарплата</label>
+        <div class="input-group mb-3">
+            <span class="input-group-text">₴</span>
+            <input asp-for="Salary" class="form-control form-control-lg" placeholder="Зарплата" min="0">
+            <span class="input-group-text">.00</span>
+        </div>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-success btn-block py-2">Підтвердити</button>
+    </div>
+</form>
+
+<script>
+    window.addEventListener('load', () => {
+        getPositions();
+        getSchedules();
+
+        function getPositions() {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Chef/GetPositions');
+            xhr.setRequestHeader('Content-Type', 'x-www-form-urlencoded');
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = () => {
+                let data = JSON.parse(xhr.responseText);
+                for (let i = 0; i < data.length; i++) {
+                    let option = document.createElement('option');
+                    option.value = data[i].Id;
+                    option.innerText = data[i].Title;
+                    document.getElementById('positions').appendChild(option);
+                }
+            };
+            xhr.send();
+        }
+
+        function getSchedules() {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Chef/GetSchedules');
+            xhr.setRequestHeader('Content-Type', 'x-www-form-urlencoded');
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = () => {
+                let data = JSON.parse(xhr.responseText);
+                for (let i = 0; i < data.length; i++) {
+                    let option = document.createElement('option');
+                    option.value = data[i].Id;
+                    option.innerText = data[i].Name;
+                    document.getElementById('schedules').appendChild(option);
+                }
+            };
+            xhr.send();
+        }
+    });
+</script>

@@ -1,0 +1,45 @@
+﻿@using RestaurantSupportWebApp.ViewModels;
+@model List<ProductsViewModel>
+@{
+    ViewBag.Title = "Products Page";
+    Layout = "_LayoutChef.cshtml";
+}
+
+<h1>Продукти</h1>
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-2 p-3">
+            <button class="btn btn-primary py-2" data-bs-toggle="modal" data-bs-target="#AddProductModal">Додати продукт</button>
+        </div>
+        <div class="col-2 p-3">
+            <form asp-action="OrderProducts">
+                <button class="btn btn-primary py-2">Замовити продукт</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr class="text-center">
+            <th scope="col" class="col-9">Назва</th>
+            <th scope="col">Кількість</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="text-center">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@await Html.PartialAsync("_AddProductPartial", new AddProductViewModel())

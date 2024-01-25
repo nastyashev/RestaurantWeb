@@ -1,0 +1,91 @@
+﻿@using RestaurantSupportWebApp.ViewModels;
+@model CloseOrderViewModel
+@{
+    ViewBag.Title = "Receipt Page";
+    Layout = "_LayoutWaiter.cshtml";
+}
+
+<h1>Чек</h1>
+<hr />
+
+<div class="needs-validation row g-2">
+    <div class="col-2">
+        <select id="tables" class="form-select form-select-lg mb-3">
+            <option disabled selected value="">Столик</option>
+        </select>
+        <span asp-validation-for="TableId" class="text-danger"></span>
+    </div>
+</div>
+
+<table class="table mt-4">
+    <thead class="text-center">
+        <tr>
+            <th scope="col" class="col-8">Страва</th>
+            <th scope="col"> Ціна</th>
+        </tr>
+    </thead>
+    <tbody id="tablebody" class="text-center">
+    </tbody>
+</table>
+
+<div class="text-end">
+    <output id="totalprice" class="text-center">Загальна вартість: 0</output>
+</div>
+
+<form asp-action="CloseOrder" class="col-12 mt-4">
+    <input asp-for="TableId" id="tableid" hidden/> 
+    <button type="submit" class="btn btn-success btn-block py-2">Закрити замовлення</button>
+    <output id="alerttext" class="text-danger"></output>
+</form>
+
+<script>
+    window.addEventListener('load', () => {
+        getTables();
+
+        function getTables() {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', '/Waiter/GetNotPaidTables');
+            xhr.setRequestHeader('Content-Type', 'x-www-form-urlencoded');
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = () => {
+                let data = JSON.parse(xhr.responseText);
+                for (let i = 0; i < data.length; i++) {
+                    let option = document.createElement('option');
+                    option.value = data[i].Id;
+                    option.innerText = data[i].Id;
+                    document.getElementById('tables').appendChild(option);
+                }
+            };
+            xhr.send();
+        }
+
+        document.getElementById("tables").addEventListener("change", () => {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Waiter/Receipt');
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = () => {
+                if (xhr.status == 200) {
+                    let data = JSON.parse(xhr.responseText).Meals;
+                    let totalprice = 0;
+                    document.getElementById('tablebody').innerHTML = '';
+                    for (let i = 0; i < data.length; i++) {
+                        let tr = document.createElement('tr');
+                        let td1 = document.createElement('td');
+                        td1.innerText = data[i].Title;
+                        let td2 = document.createElement('td');
+                        td2.innerText = data[i].Price;
+                        totalprice += data[i].Price;
+                        tr.appendChild(td1);
+                        tr.appendChild(td2);
+                        document.getElementById('tablebody').appendChild(tr);
+                    }
+                    document.getElementById('totalprice').innerText = 'Загальна вартість: ' + totalprice;
+                    document.getElementById('tableid').value = document.getElementById('tables').value;
+                }
+            };
+            xhr.send(JSON.stringify({ 
+                TableId: document.getElementById('tables').value }));
+        });
+    });
+</script>

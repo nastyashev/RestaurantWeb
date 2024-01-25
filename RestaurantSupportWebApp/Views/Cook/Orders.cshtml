@@ -1,0 +1,57 @@
+﻿@using RestaurantSupportWebApp.ViewModels;
+@model List<OrdersViewModel>
+@{
+    ViewBag.Title = "Orders Page";
+    Layout = "_LayoutCook.cshtml";
+}
+
+<h1>Замовлення</h1>
+<hr />
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th scope="col" class="col-2">№ Замовлення</th>
+            <th scope="col" class="col-3">Страва</th>
+            <th scope="col" class="col-6">Коментар</th>
+            <th scope="col" class="col-1">Готовність</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MenuItemTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    <input type="checkbox" class="isready" id="@item.Id" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    window.onload = function () {
+        let isready = document.getElementsByClassName("isready");
+        for (let i = 0; i < isready.length; i++) {
+            isready[i].addEventListener("change", function () {
+                let id = isready[i].id
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', '/Cook/SetReady?id=' + id);
+                xhr.setRequestHeader('Content-Type', 'x-www-form-urlencoded; charset=UTF-8');
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.onload = () => {
+                    window.location.reload();
+                };
+                xhr.send();
+            });
+        }
+    }
+</script>

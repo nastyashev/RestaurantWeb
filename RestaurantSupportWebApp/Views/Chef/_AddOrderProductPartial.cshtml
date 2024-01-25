@@ -1,0 +1,92 @@
+﻿@using RestaurantSupportWebApp.ViewModels;
+@using RestaurantSupportWebApp.Models;
+@model AddOrderProductViewModel
+
+<div class="modal fade" id="AddOrderProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Додати Продукт</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="AddOrderProduct" autocomplete="off" class="needs-validation row g-2">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="col-10">
+                        <label class="form-label">Назва</label>
+                        <input id="productname" asp-for="ProductName" class="form-control form-control-lg" placeholder="Продукти" list="products">
+                        <datalist id="products">
+                            <option hidden selected value="">Продукти</option>
+                        </datalist>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label">Кількість</label>
+                        <input asp-for="Amount" class="form-control form-control-lg" placeholder="Кількість" min="0" value="1">
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+                    <div class="modal-footer col-12">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+                        <button id="submitaddproduct" type="submit" class="btn btn-success btn-block py-2">Підтвердити</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.addEventListener('load', () => {
+        getProducts();
+        
+        function getProducts() {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Chef/GetProducts');
+            xhr.setRequestHeader('Content-Type', 'x-www-form-urlencoded');
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = () => {
+                let data = JSON.parse(xhr.responseText);
+                products = data;
+                for (let i = 0; i < data.length; i++) {
+                    let option = document.createElement('option');
+                    option.value = data[i].Name;
+                    document.getElementById('products').appendChild(option);
+                }
+            };
+            xhr.send();
+        }
+    });
+
+    document.getElementById('productname').addEventListener('change', () => {
+        let productName = document.getElementById('productname').value;
+        if (productName == "") {
+            document.getElementById('submitaddproduct').disabled = true;
+        }
+        else {
+            document.getElementById('submitaddproduct').disabled = false;
+        }
+    });
+
+    document.getElementById('submitaddproduct').addEventListener('click', () => {
+        let productName = document.getElementById('productname').value;
+        let products = document.getElementById('products');
+        let productsTemp = Array();
+        for (let i = 1; i < products.options.length; i++) {
+            productsTemp.push(products.options[i].value);
+        }
+        let isinlist = false;
+        for (let i in productsTemp) {
+            if (productsTemp[i] == productName) {
+                isinlist = true;
+            }
+        }
+        
+        if (isinlist) {
+            document.getElementById('submitaddproduct').disabled = false;
+        }
+        else {
+            document.getElementById('submitaddproduct').disabled = true;
+        }
+    });
+</script>

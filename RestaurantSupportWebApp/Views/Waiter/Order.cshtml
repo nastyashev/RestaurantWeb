@@ -1,0 +1,215 @@
+﻿@using RestaurantSupportWebApp.ViewModels;
+@model NewOrderViewModel
+@{
+    ViewBag.Title = "Order Page";
+    Layout = "_LayoutWaiter.cshtml";
+}
+
+<h1>Замовлення</h1>
+<hr />
+
+<div class="needs-validation row g-2">
+    <div class="col-2">
+        <select id="tables" class="form-select form-select-lg mb-3">
+            <option disabled selected value="">Столик</option>
+        </select>
+        <span asp-validation-for="TableId" class="text-danger"></span>
+    </div>
+
+    <div class="col-12">
+        <label class="form-label">Коментар</label>
+        <div class="form-floating">
+            <textarea id="ordercomment" class="form-control" placeholder="Коментар" style="height: 100px" autocomplete="off"></textarea>
+        </div>
+    </div>
+</div>
+
+<div class="col-12 mt-4">
+    <button id="addmealbtn" class="btn btn-primary py-2" data-bs-toggle="modal" data-bs-target="#addmeal">Додати страву</button>
+</div>
+
+<table class="table mt-4">
+    <thead class="text-center">
+        <tr>
+            <th scope="col">Страва</th>
+            <th scope="col" class="col-8">Коментар до страви</th>
+        </tr>
+    </thead>
+    <tbody id="tablebody" class="text-center">
+    </tbody>
+</table>
+
+<div class="col-12 mt-4">
+    <button id="submitorder" type="submit" class="btn btn-success btn-block py-2" disabled>Підтвердити</button>
+    <output id="alerttext" class="text-danger"></output>
+</div>
+
+<div class="modal fade" id="addmeal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Додати страву до замовлення</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" autocomplete="off">
+                <div class="needs-validation row g-2">
+                    <div class="col-12">
+                        <input id="mealtitle" class="form-control form-control-lg" placeholder="Страва" list="meals" autocomplete="off">
+                        <datalist id="meals">
+                            <option hidden selected value="">Страва</option>
+                        </datalist>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Коментар до страви</label>
+                        <div class="form-floating">
+                            <textarea id="mealcomment" class="form-control" placeholder="Коментар до страви" style="height: 100px" autocomplete="off"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer col-12">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+                        <button id="addmealbtnsubmit" type="submit" class="btn btn-success btn-block py-2" disabled>Підтвердити</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let meals = [];
+        let orderMeals = Array();
+
+        window.addEventListener('load', () => {
+            getMeals();
+            getTables();
+
+            function getMeals() {
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', '/Waiter/GetMenuItems');
+                xhr.setRequestHeader('Content-Type', 'x-www-form-urlencoded');
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.onload = () => {
+                    let data = JSON.parse(xhr.responseText);
+                    products = data;
+                    for (let i = 0; i < data.length; i++) {
+                        let option = document.createElement('option');
+                        option.value = data[i].Title;
+                        document.getElementById('meals').appendChild(option);
+                    }
+                };
+                xhr.send();
+            }
+
+            function getTables() {
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', '/Waiter/GetFreeTables');
+                xhr.setRequestHeader('Content-Type', 'x-www-form-urlencoded');
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.onload = () => {
+                    let data = JSON.parse(xhr.responseText);
+                    for (let i = 0; i < data.length; i++) {
+                        let option = document.createElement('option');
+                        option.value = data[i].Id;
+                        option.innerText = data[i].Id;
+                        document.getElementById('tables').appendChild(option);
+                    }
+                };
+                xhr.send();
+            }
+
+            let modal = new bootstrap.Modal(document.getElementById('addmeal'));
+
+            document.getElementById("addmealbtnsubmit").addEventListener("click", () => {
+                orderMeals.push({
+                    Title: document.getElementById("mealtitle").value,
+                    Comment: document.getElementById("mealcomment").value
+                });
+                modal.hide();
+                reloadTable();
+                checkOrder();
+            });
+
+            document.getElementById("addmealbtn").addEventListener("click", () => {
+                document.getElementById("mealtitle").value = "";
+                document.getElementById("mealcomment").value = "";
+            });
+
+            function reloadTable() {
+                console.log(orderMeals);
+                document.getElementById('tablebody').innerHTML = '';
+                for (let i = 0; i < orderMeals.length; i++) {
+                    let tr = document.createElement('tr');
+                    let td1 = document.createElement('td');
+                    td1.innerText = orderMeals[i].Title;
+                    let td2 = document.createElement('td');
+                    td2.innerText = orderMeals[i].Comment;
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    document.getElementById('tablebody').appendChild(tr);
+                }
+            }
+
+            document.getElementById("submitorder").addEventListener("click", () => {
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/Waiter/AddOrder');
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        window.location.href = '/Waiter/Order';
+                    }
+                    else {
+                        document.getElementById('alerttext').hidden = false;
+                        document.getElementById('alerttext').innerText = xhr.responseText;
+                    }
+                };
+                xhr.send(JSON.stringify({
+                    TableId: document.getElementById("tables").value,
+                    Comment: document.getElementById("ordercomment").value,
+                    Meals: orderMeals
+                }));
+            });
+        });
+
+        document.getElementById('mealtitle').addEventListener('change', check);
+
+        function check() {
+            let mealTitle = document.getElementById('mealtitle').value;
+            let meals = document.getElementById('meals');
+            let mealsTemp = Array();
+
+            for (let i = 1; i < meals.options.length; i++) {
+                mealsTemp.push(meals.options[i].value);
+            }
+            let isinlist = false;
+            for (let i in mealsTemp) {
+                if (mealsTemp[i] == mealTitle) {
+                    isinlist = true;
+                }
+            }
+
+            if (mealTitle == "" || !isinlist) {
+                document.getElementById('addmealbtnsubmit').disabled = true;
+            }
+            else {
+                document.getElementById('addmealbtnsubmit').disabled = false;
+            }
+        }
+
+        document.getElementById('tables').addEventListener('change', checkOrder);
+
+        function checkOrder() {
+            let tables = document.getElementById('tables');
+
+            if (orderMeals.length == 0 || tables.value == "") {
+                document.getElementById('submitorder').disabled = true;
+            }
+            else {
+                document.getElementById('submitorder').disabled = false;
+            }
+        }
+    </script>
+}

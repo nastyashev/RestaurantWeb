@@ -1,0 +1,38 @@
+﻿@using RestaurantSupportWebApp.ViewModels;
+@model List<PlacementViewModel>
+@{
+    ViewBag.Title = "Placement Page";
+    Layout = "_LayoutHostess.cshtml";
+}
+
+<h1>Посадка на сьогодні</h1>
+<hr />
+<table class="table">
+    <thead>
+        <tr class="text-center">
+            <th scope="col" class="col-2">Ім'я</th>
+            <th scope="col" class="col-2">№ столика</th>
+            <th scope="col" class="col-2">Час</th>
+            <th scope="col" class="col-6">Коментар</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="text-center">
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TableId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reservation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

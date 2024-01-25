@@ -1,0 +1,58 @@
+﻿@using RestaurantSupportWebApp.ViewModels;
+@{
+    ViewBag.Title = "Schedule Page";
+    Layout = "_LayoutHostess.cshtml";
+}
+
+<h1>Розклад</h1>
+<hr />
+
+<div class="container text-center">
+    <div class="row row-cols-auto">
+        <div class="col">
+            <button id="today" type="button" class="btn btn-outline-primary">Сьогодні</button>
+        </div>
+
+        <div class="col">
+            <button id="prevmonth" type="button" class="btn rounded-pill btn-outline-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 2 16 16">
+                    <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="col">
+            <button id="nextmonth" type="button" class="btn rounded-pill btn-outline-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 2 16 16">
+                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="col" style="padding: 4px;">
+            <h4 id="month"></h4>
+        </div>
+
+        <div class="col" style="padding: 4px;">
+            <h4 id="year"></h4>
+        </div>
+    </div>
+</div>
+
+
+<div class="container text-center mt-4">
+    <div class="row" style="margin-left: 0; margin-right: 0;">
+        <div class="col">Понеділок</div>
+        <div class="col">Вівторок</div>
+        <div class="col">Середа</div>
+        <div class="col">Четвер</div>
+        <div class="col">П'ятниця</div>
+        <div class="col">Субота</div>
+        <div class="col">Неділя</div>
+    </div>
+
+    <div id="scheduleTable"></div>
+</div>
+
+<link rel="stylesheet" href="~/css/schedule.css" />
+<script src="~/js/schedule.js"></script>
